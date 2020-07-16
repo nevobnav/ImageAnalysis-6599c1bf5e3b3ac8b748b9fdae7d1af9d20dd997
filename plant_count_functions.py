@@ -223,33 +223,33 @@ def cluster_objects(x_block_size, y_block_size, ds, kmeans_init, iterative_fit, 
                     unique, counts = np.unique(y_kmeans, return_counts=True)
 
                     #Get cluster centres
-                    #centres = kmeans.cluster_centers_
+                    centres = kmeans.cluster_centers_
                     
-# =============================================================================
-#                     get_green = [0,1,2]
-#                     get_soil = []
-#                     
-#                     get_green = np.argmax(centres[:,1] - centres[:,0])
-#                     get_background = np.argmin(centres[:,1])
-#                     get_remaining = np.argmax(centres[:, 0])
-# 
-#                     #create binary output, green is one the rest is zero
-#                     y_kmeans[y_kmeans == get_green] = 10
-#                     y_kmeans[y_kmeans == get_background] = 5
-#                     y_kmeans[(y_kmeans < 5)] = 1
-# =============================================================================
+
+                    #get_green = [0,1,2]
+                    #get_soil = []
+                    
+                    get_green = np.argmax(centres[:,1] - centres[:,0])
+                    get_background = np.argmin(centres[:,1])
+                    get_remaining = np.argmax(centres[:, 0])
+
+                    #create binary output, green is one the rest is zero
+                    y_kmeans[y_kmeans == get_green] = 10
+                    y_kmeans[y_kmeans == get_background] = 5
+                    y_kmeans[(y_kmeans < 5)] = 1
+
 
                     #convert binary output back to 8bit image
                     kmeans_img = y_kmeans.copy()
                     kmeans_img = kmeans_img.reshape(img.shape[0:2]).astype(np.uint8)
-                    #ret,binary_img = cv2.threshold(kmeans_img,9,255,cv2.THRESH_BINARY)
+                    ret,binary_img = cv2.threshold(kmeans_img,4,255,cv2.THRESH_BINARY)
                     clustering_result = kmeans_img * 25
 
                     #get index of the greenest cluster centre
                     #y_kmeans[(y_kmeans == 0)] = 1
                     #y_kmeans[(y_kmeans == 2)] = 1
-                    y_kmeans[y_kmeans > 0] = 1
-                    binary_img = y_kmeans.reshape(img.shape[0:2]).astype(np.uint8)
+                    #y_kmeans[y_kmeans > 0] = 1
+                    #binary_img = y_kmeans.reshape(img.shape[0:2]).astype(np.uint8)
 
 
                     #optional erode to deal with overlap
